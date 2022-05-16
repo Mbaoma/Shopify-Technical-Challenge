@@ -54,7 +54,13 @@ def Retrieveitem(name):
     if item:
         return render_template('data.html', item = item)
     return f"item with name ={name} Does not exist"
- 
+
+@app.route('/data/tag/<string:tag>')
+def Retrieveitemtag(tag):
+    item = ItemModel.query.filter_by(tag=tag).first()
+    if item:
+        return render_template('tag.html', item = item)
+    return f"item with tag ={tag} Does not exist" 
  
  #delete an existing item 
 @app.route('/data/<string:name>/delete', methods=['GET','POST'])
