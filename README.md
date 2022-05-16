@@ -8,10 +8,9 @@ This project is set to build an inventory tracking web application for a logisti
 - View a list of inventory items
 
 Also,
-- Each inventory item is associated with a city where the item is stored. There are only 5 possible cities used for storage.
-- The list of items in the inventory includes the city and a simple textual description of the current weather.
+- Each inventory item is associated with a city where the item is stored. 
 
-Lastly, customers can sort items by tags.
+Lastly, customers can search for items by tags.
 
 ## Setting Up
 -   Ensure you have [Python](www.python.org) installed on your PC.
@@ -51,9 +50,12 @@ GET request: http://127.0.0.1:5000/data/<string:name> (single item)
 
 <img width="279" alt="image" src="https://user-images.githubusercontent.com/49791498/168654547-ab2d3396-0d12-474c-b08a-d543bd87ffae.png">
 
+GET request: http://127.0.0.1:5000/data/tag/<string:tag>(search for items by tag)
+<img width="342" alt="image" src="https://user-images.githubusercontent.com/49791498/168660368-c4fc4955-80f4-4601-b3c7-e0b51efa1ef0.png">
+
 DELETE request: http://127.0.0.1:5000/data/<string:name>/delete
 
 <img width="342" alt="image" src="https://user-images.githubusercontent.com/49791498/168654755-4dd498d4-04e3-4239-99d2-ebe608a66e2b.png">
 
-
+Clicking 'yes' will delete the item and return a page displaying the available items in the inventory
 <img width="342" alt="image" src="https://user-images.githubusercontent.com/49791498/168654793-7f5a1b81-9f66-493b-a8e1-41ba0b06e717.png">
