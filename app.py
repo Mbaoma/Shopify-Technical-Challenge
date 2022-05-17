@@ -1,3 +1,4 @@
+from crypt import methods
 import os
 from flask import Flask, redirect, render_template, request, json
 import requests
@@ -32,19 +33,38 @@ def create():
         name = request.form['name']
         tag = request.form['tag']
         location = request.form['location']
-        #weather= request.form['weather']
-        
+
+        #display weather at shop location
+        api_key = "071534067fb322029833e7bab196a9c5"
+        base_url = "http://api.openweathermap.org/data/2.5/weather?"
+        complete_url = url + "appid=" + api_key + "&q=" + location
+        response = request.get(complete_url)
+        weather_information = response.json()
+        temperature = str(weather_information['main']['temp']) + 'k' 
+
+
         item = ItemModel(item_id=item_id, name=name, tag=tag, location = location) 
         db.session.add(item)
         db.session.commit()
-        return redirect('/data')
+        return redirect('/data', temperature=temperature)
  
 
 #view list of available items 
-@app.route('/data')
+@app.route('/data', methods=['GET'])
 def RetrieveList():
     items = ItemModel.query.all()
-    return render_template('datalist.html',items = items)
+    
+    location = 'Lagos'
+    api_key = "071534067fb322029833e7bab196a9c5"
+    base_url = "http://api.openweathermap.org/data/2.5/weather?"
+    complete_url = url + "appid=" + api_key + "&q=" + location
+    response = requests.get(complete_url)
+    weather_information = response.json()
+    temperature = str(weather_information['main']['temp']) + 'k' 
+
+
+   
+    return render_template('datalist.html',items = items, temperature=temperature)
  
  
  #search for an item  by name
@@ -55,6 +75,7 @@ def Retrieveitem(name):
         return render_template('data.html', item = item)
     return f"item with name ={name} Does not exist"
 
+#search for an item by tag
 @app.route('/data/tag/<string:tag>')
 def Retrieveitemtag(tag):
     item = ItemModel.query.filter_by(tag=tag).first()
@@ -75,6 +96,6 @@ def delete(name):
  
     return render_template('delete.html')
  
-#app.run(host='127.0.0.1', port=5000)
+
 if __name__ == '__main__':
     app.run(debug=True)

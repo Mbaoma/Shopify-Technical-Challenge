@@ -1,5 +1,6 @@
 {% for item in items %}
-<table>
+
+<table border="1">
     <th>
         Name 
     </th>
@@ -8,6 +9,9 @@
     </th>
     <th>
         Tag
+    </th>
+    <th>
+        Weather at Store Location
     </th>
     <tr>
     <td> 
@@ -18,6 +22,9 @@
     </td>
     <td>
     {{item.tag}} 
+    </td>
+    <td>
+        {{temperature}}
     </td>
     </tr>
 </table>
