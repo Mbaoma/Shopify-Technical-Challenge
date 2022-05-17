@@ -1,10 +1,12 @@
-from crypt import methods
-import os
-from flask import Flask, redirect, render_template, request, json
+from flask import Flask, redirect, render_template, request, json, url_for
 import requests
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from models import db, ItemModel
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 #configurations
 app = Flask(__name__)
@@ -18,9 +20,17 @@ def create_table():
     db.create_all()
 
 #variables for weather api
-api_key = "your-api-key"
-url = "http://api.openweathermap.org/data/2.5/weather?"
-#location = request.form['location']
+api_key = os.getenv('APIkey')
+base_url = "http://api.openweathermap.org/data/2.5/weather?"
+
+#function to get the store locations
+def get_temp_from_location(location):
+    appid = 'your-api-key'
+    api_url = base_url + '&q=' + location +'&units=metric' + '&appid=' + api_key.format(location, appid)
+    response = requests.get(api_url)
+    weather_information = response.json()
+    temperature = str(weather_information['main']['temp']) + 'K' 
+    return temperature
 
 #POST request to add item to inventory
 @app.route('/data/create' , methods = ['GET','POST'])
@@ -29,50 +39,38 @@ def create():
         return render_template('create.html')
  
     if request.method == 'POST':
-        item_id = request.form['item_id']
         name = request.form['name']
         tag = request.form['tag']
         location = request.form['location']
 
         #display weather at shop location
-        api_key = "your-api-key"
-        base_url = "http://api.openweathermap.org/data/2.5/weather?"
-        complete_url = url + "appid=" + api_key + "&q=" + location
-        response = request.get(complete_url)
-        weather_information = response.json()
-        temperature = str(weather_information['main']['temp']) + 'k' 
+        temperature = get_temp_from_location(location)
 
-
-        item = ItemModel(item_id=item_id, name=name, tag=tag, location = location) 
+        item = ItemModel( name=name, tag=tag, location = location) 
         db.session.add(item)
         db.session.commit()
-        return redirect('/data', temperature=temperature)
+        return redirect('/data',temperature=temperature)
  
 
 #view list of available items 
 @app.route('/data', methods=['GET'])
 def RetrieveList():
     items = ItemModel.query.all()
+    items = [{
+                **item.__dict__,
+                'temperature': get_temp_from_location(item.location)
+                } for item in items
+            ]
     
-    location = 'Lagos'
-    api_key = "your-api-key"
-    base_url = "http://api.openweathermap.org/data/2.5/weather?"
-    complete_url = url + "appid=" + api_key + "&q=" + location
-    response = requests.get(complete_url)
-    weather_information = response.json()
-    temperature = str(weather_information['main']['temp']) + 'k' 
-
-
-   
-    return render_template('datalist.html',items = items, temperature=temperature)
- 
+    
+    return render_template('datalist.html',items = items)
  
  #search for an item  by name
 @app.route('/data/<string:name>')
 def Retrieveitem(name):
     item = ItemModel.query.filter_by(name=name).first()
     if item:
-        return render_template('data.html', item = item)
+        return render_template('data.html', item = item, temperature=get_temp_from_location(item.location))
     return f"item with name ={name} Does not exist"
 
 #search for an item by tag
@@ -80,7 +78,7 @@ def Retrieveitem(name):
 def Retrieveitemtag(tag):
     item = ItemModel.query.filter_by(tag=tag).first()
     if item:
-        return render_template('tag.html', item = item)
+        return render_template('tag.html', item = item, temperature=get_temp_from_location(item.location))
     return f"item with tag ={tag} Does not exist" 
  
  #delete an existing item 
