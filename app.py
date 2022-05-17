@@ -55,7 +55,7 @@ def RetrieveList():
     items = ItemModel.query.all()
     
     location = 'Lagos'
-    api_key = "071534067fb322029833e7bab196a9c5"
+    api_key = "your-api-key"
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     complete_url = url + "appid=" + api_key + "&q=" + location
     response = requests.get(complete_url)
