@@ -30,7 +30,8 @@ def get_temp_from_location(location):
     weather_information = response.json()
     temperature = str(weather_information['main']['temp']) + 'K' 
     return temperature
-
+    #print(temperature)
+    
 #POST request to add item to inventory
 @app.route('/data/create' , methods = ['GET','POST'])
 def create():
