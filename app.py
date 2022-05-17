@@ -25,8 +25,7 @@ base_url = "http://api.openweathermap.org/data/2.5/weather?"
 
 #function to get the store locations
 def get_temp_from_location(location):
-    appid = 'your-api-key'
-    api_url = base_url + '&q=' + location +'&units=metric' + '&appid=' + api_key.format(location, appid)
+    api_url = base_url + '&q=' + location +'&units=metric' + '&appid=' + api_key.format(location, api_key)
     response = requests.get(api_url)
     weather_information = response.json()
     temperature = str(weather_information['main']['temp']) + 'K' 
