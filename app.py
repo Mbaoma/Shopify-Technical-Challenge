@@ -18,7 +18,7 @@ def create_table():
     db.create_all()
 
 #variables for weather api
-api_key = "071534067fb322029833e7bab196a9c5"
+api_key = "your-api-key"
 url = "http://api.openweathermap.org/data/2.5/weather?"
 #location = request.form['location']
 
