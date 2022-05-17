@@ -35,7 +35,7 @@ def create():
         location = request.form['location']
 
         #display weather at shop location
-        api_key = "071534067fb322029833e7bab196a9c5"
+        api_key = "your-api-key"
         base_url = "http://api.openweathermap.org/data/2.5/weather?"
         complete_url = url + "appid=" + api_key + "&q=" + location
         response = request.get(complete_url)
