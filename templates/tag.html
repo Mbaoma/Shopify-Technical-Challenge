@@ -1,14 +1,28 @@
-<table>
+<table border="1">
     <th>
         Tag: {{item.tag}} 
-    </th>
+    </th> <br>
     
     <tr>
     <td> 
-        Item Name: {{item.name}}
+        Item Name
     </td>
     <td>
-       Store Location: {{item.location}} 
+       Store Location
     </td>
+    <td>Weather</td>
+
+    </tr>
+
+    <tr>
+        <td>
+        {{item.name}}
+        </td>
+        <td>
+            {{item.location}} 
+        </td>
+        <td>
+            {{item.temperature}}
+        </td>
     </tr>
 </table>

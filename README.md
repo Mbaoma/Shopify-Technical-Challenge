@@ -40,11 +40,12 @@ $ pip install -r requirements.txt
 
 POST request: http://127.0.0.1:5000/data/create
 
-<img width="279" alt="image" src="https://user-images.githubusercontent.com/49791498/168648042-8cd3a85b-8d75-4ded-b463-2e9963b2209a.png">
+<img width="634" alt="image" src="https://user-images.githubusercontent.com/49791498/168780479-96902e08-206d-433c-817c-2cc8f143eb49.png">
+
 
 GET request: http://127.0.0.1:5000/data
+<img width="634" alt="image" src="https://user-images.githubusercontent.com/49791498/168780663-7a830624-b7ea-4d88-a1b9-452131c3f22f.png">
 
-<img width="279" alt="image" src="https://user-images.githubusercontent.com/49791498/168650401-623f0e80-46c1-4efa-9210-b206db85fe97.png">
 
 GET request: http://127.0.0.1:5000/data/<string:name> (single item)
 
